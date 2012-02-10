@@ -1,0 +1,12 @@
+*.user
+*Release*
+*Debug*
+*.sdf
+*.opensdf
+*.log
+*.lse
+*.cfg
+*.dat
+*.ini
+*.suo
+*ipch*
