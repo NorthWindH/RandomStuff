@@ -84,7 +84,7 @@ private:
 int main(int argc, char** argv)
 {
     // Create big random pool of numbers
-    const int poolSize = 100000000;
+    const int poolSize = 50000000;
     vector<int> pool1, pool2, pool3;
     pool1.reserve(poolSize);
     pool2.reserve(poolSize);
@@ -182,6 +182,60 @@ int main(int argc, char** argv)
     for (size_t i = 0; i < poolSize; ++i, ++p1, ++p2, ++p3)
     {
         sum += isel(*p1 < *p2, *p2, 0);
+    }
+    cout << sum << endl;
+    tester.endTest();
+
+    tester.beginTest("Branch Select with Logical And then Sum");
+    p1 = pool1.size() ? &pool1.front() : nullptr;
+    p2 = pool2.size() ? &pool2.front() : nullptr;
+    p3 = pool3.size() ? &pool3.front() : nullptr;
+    sum = 0;
+    for (size_t i = 0; i < poolSize; ++i, ++p1, ++p2, ++p3)
+    {
+        if (*p1 < *p2 && *p2 > 5000)
+        {
+            sum += *p2;
+        }
+    }
+    cout << sum << endl;
+    tester.endTest();
+
+    tester.beginTest("isel Select with Logical And then Sum");
+    p1 = pool1.size() ? &pool1.front() : nullptr;
+    p2 = pool2.size() ? &pool2.front() : nullptr;
+    p3 = pool3.size() ? &pool3.front() : nullptr;
+    sum = 0;
+    for (size_t i = 0; i < poolSize; ++i, ++p1, ++p2, ++p3)
+    {
+        sum += isel(*p1 < *p2 && *p2 > 5000, *p2, 0);
+    }
+    cout << sum << endl;
+    tester.endTest();
+
+    tester.beginTest("Branch Select with Binary And then Sum");
+    p1 = pool1.size() ? &pool1.front() : nullptr;
+    p2 = pool2.size() ? &pool2.front() : nullptr;
+    p3 = pool3.size() ? &pool3.front() : nullptr;
+    sum = 0;
+    for (size_t i = 0; i < poolSize; ++i, ++p1, ++p2, ++p3)
+    {
+        if ((*p1 < *p2) & (*p2 > 5000))
+        {
+            sum += *p2;
+        }
+    }
+    cout << sum << endl;
+    tester.endTest();
+
+    tester.beginTest("isel Select with Binary And then Sum");
+    p1 = pool1.size() ? &pool1.front() : nullptr;
+    p2 = pool2.size() ? &pool2.front() : nullptr;
+    p3 = pool3.size() ? &pool3.front() : nullptr;
+    sum = 0;
+    for (size_t i = 0; i < poolSize; ++i, ++p1, ++p2, ++p3)
+    {
+        sum += isel((*p1 < *p2) & (*p2 > 5000), *p2, 0);
     }
     cout << sum << endl;
     tester.endTest();
