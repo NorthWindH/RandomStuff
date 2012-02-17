@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <vector>
+#include <list>
 #include <string>
 #include <iostream>
 #include <cstdint>
@@ -84,17 +85,23 @@ private:
 int main(int argc, char** argv)
 {
     // Create big random pool of numbers
-    const int poolSize = 50000000;
+    const int poolSize = 5000000;
     vector<int> pool1, pool2, pool3;
     pool1.reserve(poolSize);
     pool2.reserve(poolSize);
     pool3.reserve(poolSize);
+
+    list<int> l1, l2, l3;
     srand((unsigned int)time(NULL));
     for (size_t i = 0; i < poolSize; ++i)
     {
         pool1.push_back(rand());
         pool2.push_back(rand());
         pool3.push_back(0);
+
+        l1.push_back(pool1.back());
+        l2.push_back(pool2.back());
+        l3.push_back(0);
     }
 
     Tester tester;
@@ -111,6 +118,13 @@ int main(int argc, char** argv)
 
     tester.beginTest("Iterator Vector");
     for (auto p1 = pool1.begin(), end = pool1.end(), p2 = pool2.begin(), p3 = pool3.begin(); p1 != end; ++p1, ++p2, ++p3)
+    {
+        *p3 = (((*p1 * *p2) / 3) + 16) % 100;
+    }
+    tester.endTest();
+
+    tester.beginTest("Iterator Linked List");
+    for (auto p1 = l1.begin(), end = l1.end(), p2 = l2.begin(), p3 = l3.begin(); p1 != end; ++p1, ++p2, ++p3)
     {
         *p3 = (((*p1 * *p2) / 3) + 16) % 100;
     }
